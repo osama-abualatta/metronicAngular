@@ -1,0 +1,312 @@
+<div class="kt-section">
+	<div class="button-row">
+		<!-- begin modal -->
+		<div class="kt-section">
+			<div class="kt-section__content">
+				<ng-template #content let-c="close" let-d="dismiss">
+					<div class="modal-header">
+						<h4 class="modal-title">Add Employee</h4>
+						<button
+							type="button"
+							class="close"
+							aria-label="Close"
+							(click)="d('Cross click')"
+						>
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form class="example-form" (submit)="onSubmit(form)">
+							<mat-form-field class="example-full-width">
+								<input
+									matInput
+									placeholder="Name"
+									type="text"
+									[(ngModel)]="service.formData.Name"
+								/>
+							</mat-form-field>
+							<mat-form-field class="example-full-width">
+								<input
+									matInput
+									placeholder="Age"
+									type="number"
+									[(ngModel)]="service.formData.Age"
+								/>
+							</mat-form-field>
+							<mat-form-field class="example-full-width">
+								<input
+									matInput
+									placeholder="position"
+									type="text"
+									[(ngModel)]="service.formData.position"
+								/>
+							</mat-form-field>
+							<div class="modal-footer">
+								<button
+									type="button"
+									class="btn btn-secondary"
+									(click)="c('Close click')"
+								>
+									Close
+								</button>
+								<button type="submit" class="btn btn-primary">
+									Add
+								</button>
+							</div>
+						</form>
+					</div>
+				</ng-template>
+				<button class="btn btn-primary" (click)="open(content)">
+					Add new Employee
+				</button>
+			</div>
+		</div>
+		<!-- end modal -->
+	</div>
+
+	<mat-form-field
+		class="example-form-field search-box"
+		appearance="fill"
+	>
+		<input
+			matInput
+			type="text"
+			placeholder="Search Box"
+			[(ngModel)]="searchkey"
+			autocomplete="off"
+			(keyup)="applyFilter()"
+		/>
+		<button
+			mat-button
+			*ngIf="searchkey"
+			matSuffix
+			mat-icon-button
+			aria-label="Clear"
+			(click)="onSearchClear()"
+		>
+			<mat-icon>close</mat-icon>
+		</button>
+	</mat-form-field>
+	<div class="example-container mat-elevation-z8">
+		<div
+			class="example-loading-shade"
+			*ngIf="isLoadingResults || isRateLimitReached"
+		>
+			<mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+			<div class="example-rate-limit-reached" *ngIf="isRateLimitReached">
+				GitHub's API rate limit has been reached. It will be reset in
+				one minute.
+			</div>
+		</div>
+
+		<mat-table
+			#sort="matSort"
+			#table
+			[dataSource]="dataSource"
+			class="example-table"
+			matSort
+			matSortActive="created"
+			matSortDisableClear
+			matSortDirection="asc"
+		>
+			<!-- Name Column -->
+			<ng-container matColumnDef="Name">
+				<mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+				<mat-cell *matCellDef="let row">{{ row.Name }}</mat-cell>
+			</ng-container>
+			<!-- Age Column -->
+			<ng-container matColumnDef="Age">
+				<mat-header-cell
+					*matHeaderCellDef
+					mat-sort-header
+					disableClear="true"
+				>
+					Age
+				</mat-header-cell>
+				<mat-cell *matCellDef="let row">{{ row.Age }}</mat-cell>
+			</ng-container>
+			<ng-container matColumnDef="actions">
+				<mat-header-cell mat-header-cell *matHeaderCellDef>
+					Actions
+				</mat-header-cell>
+				<mat-cell mat-cell *matCellDef="let element">
+					<!-- begin modal- details  -->
+					
+						<div class="kt-section__content">
+							<ng-template #content let-c="close" let-d="dismiss">
+								<div class="modal-header">
+									<h4 class="modal-title">
+										Employee Details
+									</h4>
+									<button
+										type="button"
+										class="close"
+										aria-label="Close"
+										(click)="d('Cross click')"
+									>
+										<span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+								<div class="modal-body">
+									<form
+										class="example-form"
+										#form="ngForm"
+										autocomplete="off"
+									>
+										<mat-form-field
+											class="example-full-width"
+										>
+											<input
+												matInput
+												placeholder="Name"
+												type="text"
+												#cardOwnerName="ngModel"
+      											[(ngModel)]="service.companyApi.name"
+											/>
+										</mat-form-field>
+										<mat-form-field
+											class="example-full-width"
+										>
+											<input
+												matInput
+												placeholder="Age"
+												type="number"
+												#cardOwnerName="ngModel"
+     											[(ngModel)]="service.companyApi.Age"
+											/>
+										</mat-form-field>
+										<mat-form-field
+											class="example-full-width"
+										>
+											<input
+												matInput
+												placeholder="position"
+												type="text"
+											/>
+										</mat-form-field>
+										<div class="modal-footer">
+											<button
+												type="submit"
+												class="btn btn-secondary"
+												(click)="c('Close click')"
+											>
+												Close
+											</button>
+										</div>
+									</form>
+								</div>
+							</ng-template>
+							<button
+								mat-icon-button
+								color="primary"
+								(click)="open(content)"
+							>
+								<mat-icon class="mat-18">reorder</mat-icon>
+							</button>
+						</div>
+					
+					<!-- end modal Update -->
+					
+						<div class="kt-section__content">
+							<ng-template #content let-c="close" let-d="dismiss">
+								<div class="modal-header">
+									<h4 class="modal-title">
+										Employee Update
+									</h4>
+									<button
+										type="button"
+										class="close"
+										aria-label="Close"
+										(click)="d('Cross click')"
+									>
+										<span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+								<div class="modal-body">
+									<form
+										class="example-form"
+										#form="ngForm"
+										autocomplete="off"
+									>
+										<mat-form-field
+											class="example-full-width"
+										>
+											<input
+												matInput
+												placeholder="Name"
+												type="text"
+												#cardOwnerName="ngModel"
+      											[(ngModel)]="service.companyApi.name"
+											/>
+										</mat-form-field>
+										<mat-form-field
+											class="example-full-width"
+										>
+											<input
+												matInput
+												placeholder="Age"
+												type="number"
+												#cardOwnerName="ngModel"
+     											[(ngModel)]="service.companyApi.Age"
+											/>
+										</mat-form-field>
+										<mat-form-field
+											class="example-full-width"
+										>
+											<input
+												matInput
+												placeholder="position"
+												type="text"
+											/>
+										</mat-form-field>
+										<div class="modal-footer">
+											<button
+												type="submit"
+												class="btn btn-secondary"
+												(click)="c('Close click')"
+											>
+												Close
+											</button>
+										</div>
+									</form>
+								</div>
+							</ng-template>
+							<button
+								mat-icon-button
+								color="primary"
+								(click)="open(content)"
+							>
+								<mat-icon class="mat-18">system_update</mat-icon>
+							</button>
+						</div>
+					
+					<!-- end modal Update -->
+					
+					<!-- <button
+						mat-icon-button
+						color="accent"
+						(click)="redirectToUpdate(element.id)"
+					>
+						<mat-icon class="mat-18">system_update</mat-icon>
+					</button> -->
+					<button
+						mat-icon-button
+						color="warn"
+						(click)="deleteEmp(id)"
+					>
+						<mat-icon class="mat-18">delete</mat-icon>
+					</button>
+				</mat-cell>
+			</ng-container>
+			<mat-header-row
+				*matHeaderRowDef="displayedColumns"
+			></mat-header-row>
+			<mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+		</mat-table>
+		<mat-paginator
+			#matPaginator
+			[length]="resultsLength"
+			[pageSize]="30"
+		></mat-paginator>
+	</div>
+</div>

@@ -1,0 +1,36 @@
+<div class="kt-section">
+	<span *ngIf="closeResult" class="kt-section__sub">
+	  <pre>{{closeResult}}</pre>
+	</span>
+	<div class="kt-section__content">
+	  <ng-template #content let-c="close" let-d="dismiss">
+		<div class="modal-header">
+		  <h4 class="modal-title">Basic demo</h4>
+		  <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+			<span aria-hidden="true">&times;</span>
+		  </button>
+		</div>
+		<div class="modal-body">
+			<form class="example-form">
+				<mat-form-field class="example-full-width">
+					<input matInput placeholder="Name" value="name" type="text" >
+					<mat-error *ngIf="nameFormControl.hasError('required')">
+						Name is <strong>required</strong>
+					  </mat-error>
+				  </mat-form-field>
+				  <mat-form-field class="example-full-width">
+					<input matInput placeholder="Age" type="number"/>
+				  </mat-form-field>
+				  <mat-form-field class="example-full-width">
+					<input matInput placeholder="position" value="name" type="text">
+				  </mat-form-field>
+			   </form>
+		</div>
+		<div class="modal-footer">
+		  <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+		  <button type="button" class="btn btn-primary">Save changes</button>
+		</div>
+	  </ng-template>
+	  <button class="btn btn-primary" (click)="open(content)">Launch demo modal</button>
+	</div>
+  </div>
